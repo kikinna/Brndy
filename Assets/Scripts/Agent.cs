@@ -17,16 +17,22 @@ public class Agent : MonoBehaviour
 
 	private Quaternion     m_PointRotation;
 
+	private float          m_IdleStart;
+	private float          m_IdleTime;
+
 	// PUBLIC MEMBERS
 
 	public bool            IsIdle             { get; private set; }
+	public bool            IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
 
 	// PUBLIC METHODS
 
-	public void GoToPoint(Transform point)
+	public void GoToPoint(Vector3 position, Quaternion rotation, float idleTime)
 	{
-		m_NavAgent.SetDestination(point.position);
-		m_PointRotation = point.rotation;
+		m_NavAgent.SetDestination(position);
+
+		m_PointRotation = rotation;
+		m_IdleTime = idleTime;
 	}
 
 	// MONOBEHAVIOUR
@@ -67,5 +73,10 @@ public class Agent : MonoBehaviour
 		m_Animator.SetBool(AnimationID.IsWalking, isIdle == false);
 
 		IsIdle = isIdle;
+
+		if (isIdle == true)
+		{
+			m_IdleStart = Time.time;
+		}
 	}
 }

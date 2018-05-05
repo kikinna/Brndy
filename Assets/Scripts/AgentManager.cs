@@ -6,7 +6,7 @@ public class AgentManager : MonoBehaviour
 {
 	// INSPECTOR FIELDS
 
-	[SerializeField] float             m_CheckInterval      = 0.3f;
+	[SerializeField] Vector2           m_IdleInterval       = new Vector2(3f, 5f);
 	[SerializeField] Transform[]       m_InterestingPoints;
 	[SerializeField] int               m_AgentsCount;
 	[SerializeField] Agent             m_AgentPrefab;
@@ -15,8 +15,6 @@ public class AgentManager : MonoBehaviour
 
 	private List<Agent>                m_Agents             = new List<Agent>(48);
 	private List<AgentPoint>           m_AgentPoints        = new List<AgentPoint>(48);
-
-	private float                      m_LastCheck;
 
 	// MONOBEHAVIOUR
 
@@ -55,10 +53,7 @@ public class AgentManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (m_LastCheck + m_CheckInterval < Time.time)
-		{
-			CheckAgentsPositions();
-		}
+		CheckAgentsPositions();
 	}
 
 	// PRIVATE MEMBERS
@@ -69,13 +64,11 @@ public class AgentManager : MonoBehaviour
 		{
 			var agent = m_Agents[i];
 
-			if (agent.IsIdle == false)
+			if (agent.IsFinished == false)
 				continue;
 
 			FindNewPointForAgent(agent, i);
 		}
-
-		m_LastCheck = Time.time;
 	}
 
 	private void FindNewPointForAgent(Agent agent, int agentIndex)
@@ -93,7 +86,9 @@ public class AgentManager : MonoBehaviour
 		point.IsOccupied = true;
 		point.AgentIndex = agentIndex;
 
-		agent.GoToPoint(point.Transform);
+		float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+
+		agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
 	}
 
 	private AgentPoint GetFreeAgentPoint()
