@@ -14,6 +14,7 @@ public class Agent : MonoBehaviour
 
 	private Animator       m_Animator;
 	private NavMeshAgent   m_NavAgent;
+	private AudioSource    m_AudioSource;
 
 	private Quaternion     m_PointRotation;
 
@@ -41,6 +42,7 @@ public class Agent : MonoBehaviour
 	{
 		m_Animator = GetComponent<Animator>();
 		m_NavAgent = GetComponent<NavMeshAgent>();
+		m_AudioSource = GetComponent<AudioSource>();
 
 		m_NavAgent.updateRotation = false;
 	}
@@ -72,11 +74,18 @@ public class Agent : MonoBehaviour
 		m_Animator.SetInteger(AnimationID.Laugh, randomLaugh);
 		m_Animator.SetBool(AnimationID.IsWalking, isIdle == false);
 
+		m_AudioSource.Stop();
+
 		IsIdle = isIdle;
 
 		if (isIdle == true)
 		{
 			m_IdleStart = Time.time;
+
+			if (randomLaugh > 0)
+			{
+				m_AudioSource.Play();
+			}
 		}
 	}
 }
