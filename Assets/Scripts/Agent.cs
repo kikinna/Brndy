@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class Agent : MonoBehaviour
 {
+	// CONFIGURATION
+
+	[SerializeField] int   m_LaughAnimationsCount;
+
 	// PRIVATE MEMBERS
 
 	private Animator       m_Animator;
@@ -48,7 +52,11 @@ public class Agent : MonoBehaviour
 
 	private void UpdateMovement(bool isIdle)
 	{
-		m_Animator.SetBool("IsWalking", isIdle == false);
+		int randomLaugh = Random.Range(0, m_LaughAnimationsCount + 1);
+
+		m_Animator.SetInteger(AnimationID.Laugh, randomLaugh);
+		m_Animator.SetBool(AnimationID.IsWalking, isIdle == false);
+
 		IsIdle = isIdle;
 	}
 }
