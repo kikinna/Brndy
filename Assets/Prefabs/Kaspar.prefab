@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LaughAnimationsCount: 1
+  m_RotationSpeed: 5
 --- !u!137 &137772721197016318
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

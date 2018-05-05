@@ -93,7 +93,7 @@ public class AgentManager : MonoBehaviour
 		point.IsOccupied = true;
 		point.AgentIndex = agentIndex;
 
-		agent.GoToPosition(point.Transform.position);
+		agent.GoToPoint(point.Transform);
 	}
 
 	private AgentPoint GetFreeAgentPoint()

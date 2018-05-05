@@ -8,11 +8,14 @@ public class Agent : MonoBehaviour
 	// CONFIGURATION
 
 	[SerializeField] int   m_LaughAnimationsCount;
+	[SerializeField] float m_RotationSpeed = 1f;
 
 	// PRIVATE MEMBERS
 
 	private Animator       m_Animator;
 	private NavMeshAgent   m_NavAgent;
+
+	private Quaternion     m_PointRotation;
 
 	// PUBLIC MEMBERS
 
@@ -20,9 +23,10 @@ public class Agent : MonoBehaviour
 
 	// PUBLIC METHODS
 
-	public void GoToPosition(Vector3 position)
+	public void GoToPoint(Transform point)
 	{
-		m_NavAgent.SetDestination(position);
+		m_NavAgent.SetDestination(point.position);
+		m_PointRotation = point.rotation;
 	}
 
 	// MONOBEHAVIOUR
@@ -31,6 +35,8 @@ public class Agent : MonoBehaviour
 	{
 		m_Animator = GetComponent<Animator>();
 		m_NavAgent = GetComponent<NavMeshAgent>();
+
+		m_NavAgent.updateRotation = false;
 	}
 
 	private void Start()
@@ -46,6 +52,9 @@ public class Agent : MonoBehaviour
 		{
 			UpdateMovement(isIdle);
 		}
+
+		Quaternion targetRotation = isIdle == true ? m_PointRotation : Quaternion.LookRotation(m_NavAgent.destination - transform.position, Vector3.up);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * m_RotationSpeed);
 	}
 
 	// PRIVATE METHODS
