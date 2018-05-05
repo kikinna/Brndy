@@ -9,12 +9,13 @@ public class Agent : MonoBehaviour
 
 	[SerializeField] int   m_LaughAnimationsCount;
 	[SerializeField] float m_RotationSpeed = 1f;
+    [SerializeField] AudioSource laught;
+    [SerializeField] AudioSource m_MovingSound;
 
-	// PRIVATE MEMBERS
+    // PRIVATE MEMBERS
 
-	private Animator       m_Animator;
+    private Animator       m_Animator;
 	private NavMeshAgent   m_NavAgent;
-	private AudioSource    m_AudioSource;
 
 	private Quaternion     m_PointRotation;
 
@@ -36,13 +37,12 @@ public class Agent : MonoBehaviour
 		m_IdleTime = idleTime;
 	}
 
-	// MONOBEHAVIOUR
+    // MONOBEHAVIOUR
 
-	private void Awake()
+    private void Awake()
 	{
 		m_Animator = GetComponent<Animator>();
 		m_NavAgent = GetComponent<NavMeshAgent>();
-		m_AudioSource = GetComponent<AudioSource>();
 
 		m_NavAgent.updateRotation = false;
 	}
@@ -74,18 +74,23 @@ public class Agent : MonoBehaviour
 		m_Animator.SetInteger(AnimationID.Laugh, randomLaugh);
 		m_Animator.SetBool(AnimationID.IsWalking, isIdle == false);
 
-		m_AudioSource.Stop();
+        laught.Stop();
 
 		IsIdle = isIdle;
 
 		if (isIdle == true)
 		{
-			m_IdleStart = Time.time;
+            m_MovingSound.Stop();
+            m_IdleStart = Time.time;
 
 			if (randomLaugh > 0)
 			{
-				m_AudioSource.Play();
+                laught.PlayDelayed(0.3F);
 			}
 		}
+        else
+        {
+            m_MovingSound.Play();
+        }
 	}
 }
