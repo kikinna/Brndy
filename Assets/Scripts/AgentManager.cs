@@ -9,7 +9,7 @@ public class AgentManager : MonoBehaviour
 	[SerializeField] Vector2           m_IdleInterval       = new Vector2(3f, 5f);
 	[SerializeField] Transform[]       m_InterestingPoints;
 	[SerializeField] int               m_AgentsCount;
-	[SerializeField] Agent             m_AgentPrefab;
+	[SerializeField] Agent[]           m_AgentPrefabs;
 
 	// PRIVATE MEMBERS
 
@@ -38,7 +38,11 @@ public class AgentManager : MonoBehaviour
 
 		for (int i = 0; i < m_AgentsCount; i++)
 		{
-			var agent = i == 0 ? m_AgentPrefab : Instantiate(m_AgentPrefab, transform);
+			var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
+			var agent = Instantiate(prefab, transform);
+
+			agent.gameObject.SetActive(true);
+
 			m_Agents.Add(agent);
 		}
 	}
