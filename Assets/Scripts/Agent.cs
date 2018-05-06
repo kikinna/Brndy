@@ -20,6 +20,8 @@ public class Agent : MonoBehaviour
 	private float          m_IdleStart;
 	private float          m_IdleTime;
 
+	private bool           m_StateUpdated;
+
 	// PUBLIC MEMBERS
 
 	public bool            IsIdle             { get; private set; }
@@ -61,19 +63,28 @@ public class Agent : MonoBehaviour
 		if (isIdle != IsIdle)
 		{
 			UpdateMovement(isIdle);
+			UpdateSpeech();
 		}
 
 		Quaternion targetRotation = isIdle == true ? m_PointRotation : Quaternion.LookRotation(m_NavAgent.destination - transform.position, Vector3.up);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * m_RotationSpeed);
+
+		if (m_StateUpdated == true)
+		{
+			StateUpdated.SafeInvoke();
+			m_StateUpdated = false;
+		}
+	}
+
+	private void OnDestroy()
+	{
+		StateUpdated = null;
 	}
 
 	// PRIVATE METHODS
 
 	private void UpdateMovement(bool isIdle)
 	{
-		int randomSpeech = Random.Range(0, m_SpeechAnimationsCount);
-
-		m_Animator.SetInteger(AnimationID.Speech, isIdle == true ? randomSpeech : -1);
 		m_Animator.SetBool(AnimationID.IsWalking, isIdle == false);
 
 		IsIdle = isIdle;
@@ -83,9 +94,14 @@ public class Agent : MonoBehaviour
 			m_IdleStart = Time.time;
 		}
 
-		if (StateUpdated != null)
-		{
-			StateUpdated.Invoke();
-		}
+		m_StateUpdated = true;
+	}
+
+	private void UpdateSpeech()
+	{
+		int speech = IsIdle == true ? Random.Range(0, m_SpeechAnimationsCount) : -1;
+		m_Animator.SetInteger(AnimationID.Speech, speech);
+
+		m_StateUpdated = true;
 	}
 }
