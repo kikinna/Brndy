@@ -23,11 +23,13 @@ class Blob {
   public boolean delete;
   
   // How long should I live if I have disappeared?
-  private int initTimer = 127; //127;
+  private int initTimer = 50; //127;
   public int timer;
   
   // Unique ID for each blob
   int id;
+  
+  boolean active;
   
   // Make me
   Blob(PApplet parent, int id, Contour c) {
@@ -39,11 +41,13 @@ class Blob {
     delete = false;
     
     timer = initTimer;
+    
+    active = true;
   }
   
   // Show me
   void display() {
-    println(frameRate);
+    
     Rectangle r = contour.getBoundingBox();
     
     float opacity = map(timer, 0, initTimer, 0, 60); // 127

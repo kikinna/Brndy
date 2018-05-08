@@ -21,10 +21,13 @@ import controlP5.*;
 import KinectPV2.*;
 
 OpenCV opencv;
-//Capture video;
+Capture video;
 KinectPV2 kinect;
 
 PImage src, preProcessedImage, processedImage, contoursImage, initImage, blended;
+PImage bckgSub;
+
+boolean updateBackgroundMask = false;
 
 ArrayList<Contour> contours;
 
@@ -46,7 +49,7 @@ int thresholdBlockSize = 489;
 int thresholdConstant = 45; // 45
 int blobSizeThreshold = 80; // 20
 int blobSizeMax = 200;
-int blurSize = 20; //4 
+int blurSize = 5; //4 
 
 // Control vars
 ControlP5 cp5;
@@ -54,26 +57,22 @@ int buttonColor;
 int buttonBgColor;
 
 void setup() {
-  frameRate(10);
-
-  //printArray(Capture.list());
-  //video = new Capture(this, 640, 480);
-
-  ////video = new Capture(this, 640, 480, "USB2.0 PC CAMERA");
-  //video.start();
+  frameRate(10); //<>//
   
   kinect = new KinectPV2(this);
   kinect.enableDepthImg(true);
+  kinect.enableInfraredLongExposureImg(true);
   kinect.init();
   
-  //opencv = new OpenCV(this, 640, 480);
+  ////opencv = new OpenCV(this, 640, 480);
   opencv = new OpenCV(this, 512, 424);
+  //opencv.startbckgSub(5, 3, 0.5);
   contours = new ArrayList<Contour>();
   
   // Blobs list
   blobList = new ArrayList<Blob>();
   
-  size(840, 480, P2D);
+  size(1080, 480, P3D); // 840
   
   // Init Controls
   cp5 = new ControlP5(this);
@@ -82,38 +81,42 @@ void setup() {
   // Set thresholding
   toggleAdaptiveThreshold(useAdaptiveThreshold);
   
-   
-  opencv.loadImage(kinect.getDepthImage());
-  initImage = opencv.getInput();
+  initImage = new PImage(); // kinect.getDepthImage().width, kinect.getDepthImage().height
+  bckgSub = new PImage(512,424);
 }
 
-void subtract() {
+void keyPressed() {
+  if (key == 'i') {
+    //opencv.loadImage(kinect.getInfraredLongExposureImage());
+    initImage = kinect.getDepthImage();
+    //initImage = opencv.getInput().copy();
+    println("done");
+    
+    //opencv.startbckgSub(5, 3, 0.5);
+    
+    initImage.loadPixels();
+    println(initImage.get(80, 80));
+    
+  }
   
+  if (key == '+') {
+    updateBackgroundMask = true;
+  }
+}
+
+void updateMask(PImage input) {
+  bckgSub.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, ADD);
+  println("updating mask");
+  //image(bckgSub, 0, 0, bckgSub.width/2, bckgSub.height/2);
 }
 
 void draw() {
+  // Load the new frame of our camera in to OpenCV
   
-  // Read last captured frame
-  //if (video.available()) {
-  //  video.read();
-  //}
-  
-  //// Load the new frame of our camera in to OpenCV
-  //opencv.loadImage(video);
-  opencv.loadImage(kinect.getDepthImage());
-  src = opencv.getInput();
-  src.blend(initImage, 0,0, initImage.width, initImage.height, 0, 0, src.width, src.height, SUBTRACT);
-  blended = src;
-  
-  //blendMode(BLEND);
-  //image(src, 0, 0);
-  //blendMode(SUBTRACT);
-  //image(initImage, 0,0);
-  //blendMode(BLEND);
-  //opencv.getSnapshot();
-  //println(src.width, src.height);
-  //src = opencv.getSnapshot();
-  
+  PImage opencvInput = kinect.getDepthImage();
+  opencv.loadImage(opencvInput);
+  src = opencv.getInput().copy(); //<>//
+
   
   ///////////////////////////////
   // <1> PRE-PROCESS IMAGE
@@ -122,21 +125,20 @@ void draw() {
   ///////////////////////////////
   
   // Gray channel
-  opencv.gray();
+  //opencv.gray();
   
   //opencv.brightness(brightness);
   opencv.contrast(contrast);
   
   // Save snapshot for display
-  //preProcessedImage = opencv.getSnapshot();
-  //preProcessedImage = opencv.getInput();
-  preProcessedImage = blended.copy();
+  preProcessedImage = opencv.getOutput().copy();
   
   ///////////////////////////////
   // <2> PROCESS IMAGE
   // - Threshold
   // - Noise Supression
   ///////////////////////////////
+  
   
   // Adaptive threshold - Good when non-uniform illumination
   if (useAdaptiveThreshold) {
@@ -162,10 +164,22 @@ void draw() {
   // Blur
   opencv.blur(blurSize);
   
+  if (updateBackgroundMask) {
+    updateMask(opencv.getOutput().copy());
+    updateBackgroundMask = false;
+  }
+  
+  PImage opencvImg = opencv.getOutput();
+  opencvImg.blend(bckgSub, 0, 0, bckgSub.width, bckgSub.height, 0, 0, bckgSub.width, bckgSub.height, SUBTRACT);
+  opencv.loadImage(opencvImg);
+  
+  opencv.erode();
+  opencv.erode();
+  opencv.dilate();
+  opencv.dilate();
+  
   // Save snapshot for display
-  //processedImage = opencv.getSnapshot();
-  //processedImage = opencv.getInput();
-  processedImage = blended.copy();
+  processedImage = opencv.getOutput();
   
   ///////////////////////////////
   // <3> FIND CONTOURS  
@@ -176,15 +190,14 @@ void draw() {
   //contours = opencv.findContours(true, true);
   
   // Save snapshot for display
-  //contoursImage = opencv.getSnapshot();
-  //contoursImage = opencv.getInput();
-  contoursImage = blended.copy();
+  contoursImage = opencv.getInput().copy();
   
   // Draw
   pushMatrix();
     
     // Leave space for ControlP5 sliders
-    translate(width-src.width, 0);
+    //translate(width-src.width, 0);
+    translate(300, 0);
     
     // Display images
     displayImages();
@@ -204,6 +217,10 @@ void draw() {
     popMatrix(); 
     
   popMatrix();
+  //opencv.loadImage(kinect.getDepthImage());
+  //initImage = opencv.getInput();
+  
+  sendBlobs();
 }
 
 ///////////////////////
@@ -211,13 +228,20 @@ void draw() {
 ///////////////////////
 
 void displayImages() {
+
   
+  //image(initImage, 0, 0);
   pushMatrix();
+  fill(0);
+  rect(0, 0, width, height);
+  
   scale(0.5);
   image(src, 0, 0);
   image(preProcessedImage, src.width, 0);
+  image(bckgSub, src.width*2 + 10, 0);
   image(processedImage, 0, src.height);
   image(src, src.width, src.height);
+  //image(opencv.getInput(), 0, 0, src.width*2, src.height*2);
   popMatrix();
   
   stroke(255);
@@ -270,6 +294,41 @@ void displayContoursBoundingBoxes() {
 }
 
 ////////////////////
+// Send blobs
+////////////////////
+void sendBlobs() {
+  println(blobList.size());
+  
+  for (int i = 0; i < blobList.size(); i++) {
+    for (int j = i+1; j < blobList.size(); j++) {
+      Blob a = blobList.get(i);
+      Rectangle aBB = a.getBoundingBox();
+      Blob b = blobList.get(j);
+      Rectangle bBB = b.getBoundingBox();
+      
+      // TODO 
+      //a.active = true;
+      //b.active = true;
+      
+      if (bBB.contains(aBB)) {
+        a.active = false;
+      } else if (aBB.contains(bBB)) {
+        b.active = false;
+      }
+    }
+  }
+  
+  for (Blob b : blobList) {
+    if (b.active) {
+      println("id:", b.id);
+    }
+  }
+}
+
+
+
+
+////////////////////
 // Blob Detection
 ////////////////////
 
@@ -296,6 +355,7 @@ void detectBlobs() {
     }
   
   // SCENARIO 2 
+  // mame nove bloby
   // We have fewer Blob objects than face Rectangles found from OpenCV in this frame
   } else if (blobList.size() <= newBlobContours.size()) {
     boolean[] used = new boolean[newBlobContours.size()];
@@ -320,6 +380,14 @@ void detectBlobs() {
     // Add any unused blobs
     for (int i = 0; i < newBlobContours.size(); i++) {
       if (!used[i]) {
+        
+        // do not add the countour if it has intersection with existing blobs
+        boolean intersects = false;
+        for(Blob b : blobList) {
+          intersects = intersects || b.getBoundingBox().intersects(newBlobContours.get(i).getBoundingBox());
+        }
+        if (intersects) { continue; }
+        
         println("+++ New blob detected with ID: " + blobCount);
         blobList.add(new Blob(this, blobCount, newBlobContours.get(i)));
         //blobList.add(new Blob(blobCount, blobs[i].x, blobs[i].y, blobs[i].width, blobs[i].height));
@@ -353,6 +421,14 @@ void detectBlobs() {
        Blob b = blobList.get(index);
        b.available = false;
        b.update(newBlobContours.get(i));
+       
+       // do not add the countour if it has intersection with existing blobs
+        //boolean intersects = false;
+        //for(Blob otherB : blobList) {
+        //  intersects = intersects || otherB.getBoundingBox().intersects(newBlobContours.get(i).getBoundingBox());
+        //}
+        //if (intersects) { b.delete = true; }
+        
     } 
     // Start to kill any left over Blob objects
     for (Blob b : blobList) {
