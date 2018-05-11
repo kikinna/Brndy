@@ -15,11 +15,11 @@ public class MidiMessageDistributor : MonoBehaviour
     {
         while (!receiver.IsEmpty) {
             var message = receiver.PopMessage ();
-            if (message.status == 0x90 || message.status == 0xB1 || message.status == 0xB0) {
+            //if (message.status == 0x90 || message.status == 0xB1 || message.status == 0xB0) {
                 foreach (var go in targets) {
                     go.SendMessage ("OnNoteOn", message);
                 }
-            }
+            //}
         }
     }
 }

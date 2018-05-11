@@ -21,7 +21,9 @@ int currentIndex = 0;
 void setup() {
   size(128, 128);
   frameRate(10);
-  midiBus = new MidiBus(this, 0, 0);
+  // For windows we need to install and set Loop Internal MIDI as MIDI output
+  MidiBus.list();
+  midiBus = new MidiBus(this, 0, "LoopBe Internal MIDI");
 }
 
 void draw() {
