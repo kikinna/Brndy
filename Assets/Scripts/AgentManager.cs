@@ -145,4 +145,13 @@ public class AgentManager : MonoBehaviour
 			Transform = transform;
 		}
 	}
+
+    // Listen to MIDI reciever
+    void OnNoteOn(MidiMessage midi)
+    {
+        Debug.Log(midi.status);
+        Debug.Log(midi.data1);
+        Debug.Log(midi.data2);
+    }
+
 }
