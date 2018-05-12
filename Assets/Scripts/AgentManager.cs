@@ -92,8 +92,8 @@ public class AgentManager : MonoBehaviour
 
 		float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
 
-		agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
-	}
+        agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
+    }
 
 	private AgentPoint GetFreeAgentPoint()
 	{
@@ -149,9 +149,37 @@ public class AgentManager : MonoBehaviour
     // Listen to MIDI reciever
     void OnNoteOn(MidiMessage midi)
     {
-        Debug.Log(midi.status);
-        Debug.Log(midi.data1);
-        Debug.Log(midi.data2);
+        float x = 0, z = 0, r = 0;
+        float y = 0;
+        //if (midi.status == 0xB0) // x
+        //{
+        //    Debug.Log(midi.data2);
+        //    x = ConvertRange(0, 127, -9, 9, midi.data2);
+        //    Debug.Log("new Value: " + x);
+        //}
+        if (midi.status == 0xB1) // y => z
+        {
+            Debug.Log(midi.data2);
+            z = ConvertRange(0, 127, -9, 9, midi.data2);
+            Debug.Log("new Value: " + z);
+        }
+        //if (midi.status == 0xB2) // r
+        //{
+        //    Debug.Log(midi.data2);
+        //    r = ConvertRange(0, 127, -9, 9, midi.data2);
+        //    Debug.Log("new Value: " + r);
+        //}
+        var agent = m_Agents[0];
+        float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+        x = Random.Range(-9, 9);
+        agent.GoToPoint(new Vector3(x, 0, z), new Quaternion(), idleTime);
     }
 
+    private float ConvertRange(int originalStart, int originalEnd, // original range
+                               float newStart, float newEnd, // desired range
+                               int value) // value to convert
+    {
+        float scale = (float)(newEnd - newStart) / (originalEnd - originalStart);
+        return (float)(newStart + ((value - originalStart) * scale));
+    }
 }
