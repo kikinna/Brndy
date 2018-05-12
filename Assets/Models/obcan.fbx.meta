@@ -4,11 +4,125 @@ ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: DEF-breast.L
+    100004: DEF-breast.R
+    100006: DEF-foot.L
+    100008: DEF-foot.R
+    100010: DEF-forearm.L
+    100012: DEF-forearm.L.001
+    100014: DEF-forearm.R
+    100016: DEF-forearm.R.001
+    100018: DEF-hand.L
+    100020: DEF-hand.R
+    100022: DEF-pelvis.L
+    100024: DEF-pelvis.R
+    100026: DEF-shin.L
+    100028: DEF-shin.L.001
+    100030: DEF-shin.R
+    100032: DEF-shin.R.001
+    100034: DEF-shoulder.L
+    100036: DEF-shoulder.R
+    100038: DEF-spine
+    100040: DEF-spine.001
+    100042: DEF-spine.002
+    100044: DEF-spine.003
+    100046: DEF-spine.004
+    100048: DEF-spine.005
+    100050: DEF-spine.006
+    100052: DEF-thigh.L
+    100054: DEF-thigh.L.001
+    100056: DEF-thigh.R
+    100058: DEF-thigh.R.001
+    100060: DEF-toe.L
+    100062: DEF-toe.R
+    100064: DEF-upper_arm.L
+    100066: DEF-upper_arm.L.001
+    100068: DEF-upper_arm.R
+    100070: DEF-upper_arm.R.001
+    100072: MCH-spine
+    100074: MCH-spine.001
+    100076: MCH-spine.002
+    100078: MCH-spine.003
+    100080: Obcan
+    100082: ObcanRig
+    100084: ORG-breast.L
+    100086: ORG-breast.R
+    100088: ORG-pelvis.L
+    100090: ORG-pelvis.R
+    100092: ORG-shoulder.L
+    100094: ORG-shoulder.R
+    100096: ORG-spine
+    100098: ORG-spine.003
+    100100: root
+    100102: torso
+    100104: tweak_spine
+    100106: tweak_spine.003
     400000: //RootNode
+    400002: DEF-breast.L
+    400004: DEF-breast.R
+    400006: DEF-foot.L
+    400008: DEF-foot.R
+    400010: DEF-forearm.L
+    400012: DEF-forearm.L.001
+    400014: DEF-forearm.R
+    400016: DEF-forearm.R.001
+    400018: DEF-hand.L
+    400020: DEF-hand.R
+    400022: DEF-pelvis.L
+    400024: DEF-pelvis.R
+    400026: DEF-shin.L
+    400028: DEF-shin.L.001
+    400030: DEF-shin.R
+    400032: DEF-shin.R.001
+    400034: DEF-shoulder.L
+    400036: DEF-shoulder.R
+    400038: DEF-spine
+    400040: DEF-spine.001
+    400042: DEF-spine.002
+    400044: DEF-spine.003
+    400046: DEF-spine.004
+    400048: DEF-spine.005
+    400050: DEF-spine.006
+    400052: DEF-thigh.L
+    400054: DEF-thigh.L.001
+    400056: DEF-thigh.R
+    400058: DEF-thigh.R.001
+    400060: DEF-toe.L
+    400062: DEF-toe.R
+    400064: DEF-upper_arm.L
+    400066: DEF-upper_arm.L.001
+    400068: DEF-upper_arm.R
+    400070: DEF-upper_arm.R.001
+    400072: MCH-spine
+    400074: MCH-spine.001
+    400076: MCH-spine.002
+    400078: MCH-spine.003
+    400080: Obcan
+    400082: ObcanRig
+    400084: ORG-breast.L
+    400086: ORG-breast.R
+    400088: ORG-pelvis.L
+    400090: ORG-pelvis.R
+    400092: ORG-shoulder.L
+    400094: ORG-shoulder.R
+    400096: ORG-spine
+    400098: ORG-spine.003
+    400100: root
+    400102: torso
+    400104: tweak_spine
+    400106: tweak_spine.003
     2100000: Material
     2300000: //RootNode
+    2300002: Obcan
     3300000: //RootNode
+    3300002: Obcan
     4300000: Obcan
+    7400000: ObcanRig|Action
+    7400002: ObcanRig|Idle
+    7400004: ObcanRig|ObcanRigAction
+    7400006: ObcanRig|Reset
+    9500000: //RootNode
+    13700000: Obcan
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -18,8 +132,8 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
-    optimizeGameObjects: 0
+    resampleCurves: 0
+    optimizeGameObjects: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -29,14 +143,70 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: ObcanRig|Idle
+      takeName: ObcanRig|Idle
+      firstFrame: 0
+      lastFrame: 305
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ObcanRig|Reset
+      takeName: ObcanRig|Reset
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -81,10 +251,10 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
