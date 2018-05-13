@@ -15,6 +15,7 @@ public class Agent : MonoBehaviour
 	private Animator       m_Animator;
 	private NavMeshAgent   m_NavAgent;
 
+	private Vector3        m_PointPosition;
 	private Quaternion     m_PointRotation;
 
 	private float          m_IdleStart;
@@ -37,6 +38,7 @@ public class Agent : MonoBehaviour
 	{
 		m_NavAgent.SetDestination(position);
 
+		m_PointPosition = position;
 		m_PointRotation = rotation;
 		m_IdleTime = idleTime;
 	}
@@ -58,7 +60,8 @@ public class Agent : MonoBehaviour
 
 	private void Update()
 	{
-		bool isIdle = m_NavAgent.destination.AlmostEquals(transform.position);
+		m_PointPosition.y = transform.position.y;
+		bool isIdle = m_PointPosition.AlmostEquals(transform.position, 0.1f);
 
 		if (isIdle != IsIdle)
 		{
@@ -66,7 +69,7 @@ public class Agent : MonoBehaviour
 			UpdateSpeech();
 		}
 
-		Quaternion targetRotation = isIdle == true ? m_PointRotation : Quaternion.LookRotation(m_NavAgent.destination - transform.position, Vector3.up);
+		Quaternion targetRotation = isIdle == true ? m_PointRotation : Quaternion.LookRotation(m_PointPosition - transform.position, Vector3.up);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * m_RotationSpeed);
 
 		if (m_StateUpdated == true)
