@@ -15,10 +15,11 @@ public class AgentManager : MonoBehaviour
 
 	private List<Agent>                m_Agents             = new List<Agent>(48);
 	private List<AgentPoint>           m_AgentPoints        = new List<AgentPoint>(48);
+    private List<MidiColector>         m_MidiColectors      = new List<MidiColector>(48);
 
-	// MONOBEHAVIOUR
+    // MONOBEHAVIOUR
 
-	private void Awake()
+    private void Awake()
 	{
 		for (int i = 0; i < m_InterestingPoints.Length; i++)
 		{
@@ -91,8 +92,8 @@ public class AgentManager : MonoBehaviour
 		point.AgentIndex = agentIndex;
 
 		float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-
-        agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
+        //Debug.Log("x: " + point.Transform.position.x + " " + "z: " + point.Transform.position.z);
+        //agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
     }
 
 	private AgentPoint GetFreeAgentPoint()
@@ -149,35 +150,93 @@ public class AgentManager : MonoBehaviour
     // Listen to MIDI reciever
     void OnNoteOn(MidiMessage midi)
     {
-        float x = 0, z = 0, r = 0;
-        float y = 0;
-        //if (midi.status == 0xB0) // x
-        //{
-        //    Debug.Log(midi.data2);
-        //    x = ConvertRange(0, 127, -9, 9, midi.data2);
-        //    Debug.Log("new Value: " + x);
-        //}
+        var newMidi = m_MidiColectors.Find(t => t.Id == midi.data1);
+        if (newMidi == null)
+        {
+            newMidi = new MidiColector(midi.data1);
+            m_MidiColectors.Add(newMidi);
+        }
+
+        if (midi.status == 0xB0) // x
+        {
+            newMidi.recievedMessages++;
+            newMidi.X = midi.data2;
+        }
         if (midi.status == 0xB1) // y => z
         {
-            Debug.Log(midi.data2);
-            z = ConvertRange(0, 127, -9, 9, midi.data2);
-            Debug.Log("new Value: " + z);
+            newMidi.recievedMessages++;
+            newMidi.Z = midi.data2;
         }
-        //if (midi.status == 0xB2) // r
-        //{
-        //    Debug.Log(midi.data2);
-        //    r = ConvertRange(0, 127, -9, 9, midi.data2);
-        //    Debug.Log("new Value: " + r);
-        //}
-        var agent = m_Agents[0];
-        float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-        x = Random.Range(-9, 9);
-        agent.GoToPoint(new Vector3(x, 0, z), new Quaternion(), idleTime);
+        if (midi.status == 0xB2) // r
+        {
+            newMidi.recievedMessages++;
+        }
+
+        if (newMidi.Xset && newMidi.Zset && newMidi.recievedMessages == newMidi.ExpectedMessageCount)
+        {
+            var agent = m_Agents.Find(t => t.Id == newMidi.Id);
+            if (agent == null)
+            {
+                var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
+                agent = Instantiate(prefab, transform);
+                agent.Id = newMidi.Id;
+                agent.gameObject.SetActive(true);
+
+                m_Agents.Add(agent);
+            }
+            float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+            Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
+            agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+
+            newMidi.reset();
+        }
+    }
+}
+
+public class MidiColector
+{
+    public bool Xset = false;
+    public bool Zset = false;
+    public int ExpectedMessageCount = 3;
+    public int recievedMessages = 0;
+
+    public int  Id;
+    public float X {
+        get { return m_X; }
+        set
+        {
+            m_X = -ConvertRange(0, 127, -15, 15, value);
+            Xset = true;
+        }
+    }
+    public float Z
+    {
+        get { return m_Z; }
+        set
+        {
+            m_Z = ConvertRange(0, 127, -20, 7, value);
+            Zset = true;
+        }
+    }
+
+    private float m_X;
+    private float m_Z;
+
+    public MidiColector(int id)
+    {
+        Id = id;
+    }
+
+    public void reset()
+    {
+        Xset = false;
+        Zset = false;
+        recievedMessages = 0;
     }
 
     private float ConvertRange(int originalStart, int originalEnd, // original range
                                float newStart, float newEnd, // desired range
-                               int value) // value to convert
+                               float value) // value to convert
     {
         float scale = (float)(newEnd - newStart) / (originalEnd - originalStart);
         return (float)(newStart + ((value - originalStart) * scale));
