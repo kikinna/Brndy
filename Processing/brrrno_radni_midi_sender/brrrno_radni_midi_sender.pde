@@ -52,7 +52,7 @@ void sendMidiMessages() {
       print("Sending", "id:", i, "x:", midiBlobs[i].x, "y:", midiBlobs[i].y, "r:", midiBlobs[i].r, "\n");
       midiBus.sendControllerChange(0, i, midiBlobs[i].x);
       midiBus.sendControllerChange(1, i, midiBlobs[i].y);
-      midiBus.sendControllerChange(2, i, midiBlobs[i].r);
+      //midiBus.sendControllerChange(2, i, midiBlobs[i].r);
     }
   }
 }

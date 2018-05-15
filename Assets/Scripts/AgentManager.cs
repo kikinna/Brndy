@@ -178,9 +178,12 @@ public class AgentManager : MonoBehaviour
             newMidi.recievedMessages++;
             newMidi.Z = midi.data2;
         }
-        if (midi.status == 0xB2) // r
+        if (midi.status == 0xB2) // Dead agent message
         {
-            newMidi.recievedMessages++;
+            m_MidiColectors.Remove(newMidi);
+            var agent = m_Agents.Find(t => t.ID == newMidi.Id);
+            agent.gameObject.SetActive(false);
+            m_Agents.Remove(agent);
         }
 
         if (newMidi.Xset && newMidi.Zset && newMidi.recievedMessages == newMidi.ExpectedMessageCount)
@@ -208,7 +211,7 @@ public class MidiColector
 {
     public bool Xset = false;
     public bool Zset = false;
-    public int ExpectedMessageCount = 3;
+    public int ExpectedMessageCount = 2;
     public int recievedMessages = 0;
 
     public int  Id;
