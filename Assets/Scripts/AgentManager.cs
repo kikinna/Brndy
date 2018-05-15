@@ -178,15 +178,18 @@ public class AgentManager : MonoBehaviour
             if (agent == null)
             {
                 var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
-                agent = Instantiate(prefab, transform);
+                agent = Instantiate(prefab, new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion());
                 agent.Id = newMidi.Id;
                 agent.gameObject.SetActive(true);
 
                 m_Agents.Add(agent);
             }
-            float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-            Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
-            agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+            else
+            {
+                float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+                Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
+                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+            }
 
             newMidi.reset();
         }

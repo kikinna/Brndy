@@ -36,7 +36,7 @@ void draw() {
 
 void mousePressed() {
   mouseDown = true;
-  currentIndex = 25;//(int)random(1, 127);
+  currentIndex = (int)random(1, 127);
   midiBlobs[currentIndex] = new Blob(mouseX - 1, mouseY - 1, (int)random(10, 30));
 }
 
