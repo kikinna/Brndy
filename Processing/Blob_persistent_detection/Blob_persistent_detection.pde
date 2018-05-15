@@ -57,7 +57,7 @@ int buttonColor;
 int buttonBgColor;
 
 void setup() {
-  frameRate(10); //<>//
+  frameRate(10); //<>// //<>//
   
   kinect = new KinectPV2(this);
   kinect.enableDepthImg(true);
@@ -83,6 +83,8 @@ void setup() {
   
   initImage = new PImage(); // kinect.getDepthImage().width, kinect.getDepthImage().height
   bckgSub = new PImage(512,424);
+  
+  initMidiSender();
 }
 
 void keyPressed() {
@@ -113,7 +115,7 @@ void updateMask(PImage input) {
 void draw() {
   // Load the new frame of our camera in to OpenCV
   
-  PImage opencvInput = kinect.getDepthImage();
+  PImage opencvInput = kinect.getDepthImage(); //<>//
   opencv.loadImage(opencvInput);
   src = opencv.getInput().copy(); //<>//
 
@@ -297,7 +299,7 @@ void displayContoursBoundingBoxes() {
 // Send blobs
 ////////////////////
 void sendBlobs() {
-  println(blobList.size());
+  // println(blobList.size());
   
   for (int i = 0; i < blobList.size(); i++) {
     for (int j = i+1; j < blobList.size(); j++) {
@@ -321,6 +323,7 @@ void sendBlobs() {
   for (Blob b : blobList) {
     if (b.active) {
       println("id:", b.id);
+      sendMidiMessage(b);
     }
   }
 }
@@ -445,6 +448,8 @@ void detectBlobs() {
   for (int i = blobList.size()-1; i >= 0; i--) {
     Blob b = blobList.get(i);
     if (b.delete) {
+      println("Removing blob id: " + b.id);
+      sendMidiDead(b);
       blobList.remove(i);
     } 
   }
