@@ -27,10 +27,11 @@ public class Agent : MonoBehaviour
 
 	public bool            IsIdle             { get; private set; }
 	public bool            IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
+    public int             Id;
 
-	// SIGNALS
+    // SIGNALS
 
-	public System.Action   StateUpdated;
+    public System.Action   StateUpdated;
 
 	// PUBLIC METHODS
 
