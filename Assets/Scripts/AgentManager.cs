@@ -192,15 +192,18 @@ public class AgentManager : MonoBehaviour
             if (agent == null)
             {
                 var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
-                agent = Instantiate(prefab, transform);
+                agent = Instantiate(prefab, new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion());
                 agent.ID = newMidi.Id;
                 agent.gameObject.SetActive(true);
 
                 m_Agents.Add(agent);
             }
-            float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-            Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
-            agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+            else
+            {
+                float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+                Debug.Log("ID: " + agent.ID + " x: " + newMidi.X + " z: " + newMidi.Z);
+                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+            }
 
             newMidi.reset();
         }
@@ -219,7 +222,7 @@ public class MidiColector
         get { return m_X; }
         set
         {
-            m_X = -ConvertRange(0, 127, -15, 15, value);
+            m_X = -ConvertRange(0, 127, -15, 15, value); // first two values must be set by width and height of processing window
             Xset = true;
         }
     }
