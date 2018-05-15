@@ -10,12 +10,13 @@ public class AgentManager : MonoBehaviour
 	[SerializeField] Transform[]       m_InterestingPoints;
 	[SerializeField] int               m_AgentsCount;
 	[SerializeField] Agent[]           m_AgentPrefabs;
+	[SerializeField] Transform[]       m_HandObjectPrefabs;
 
 	// PRIVATE MEMBERS
 
 	private List<Agent>                m_Agents             = new List<Agent>(48);
 	private List<AgentPoint>           m_AgentPoints        = new List<AgentPoint>(48);
-    private List<MidiColector>         m_MidiColectors      = new List<MidiColector>(48);
+	private List<MidiColector>         m_MidiColectors      = new List<MidiColector>(48);
 
     // MONOBEHAVIOUR
 
@@ -37,10 +38,20 @@ public class AgentManager : MonoBehaviour
 			return;
 		}
 
+		int handObjectsCount = m_HandObjectPrefabs.Length;
+
 		for (int i = 0; i < m_AgentsCount; i++)
 		{
 			var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
 			var agent = Instantiate(prefab, transform);
+
+			if (handObjectsCount > 0 && agent.CanHoldObject == true)
+			{
+				var objectPrefab = m_HandObjectPrefabs[Random.Range(0, handObjectsCount)];
+				var objectInstance = objectPrefab != null ? Instantiate(objectPrefab) : null;
+
+				agent.SetHandObject(objectInstance);
+			}
 
 			agent.gameObject.SetActive(true);
 
@@ -174,22 +185,19 @@ public class AgentManager : MonoBehaviour
 
         if (newMidi.Xset && newMidi.Zset && newMidi.recievedMessages == newMidi.ExpectedMessageCount)
         {
-            var agent = m_Agents.Find(t => t.Id == newMidi.Id);
+            var agent = m_Agents.Find(t => t.ID == newMidi.Id);
             if (agent == null)
             {
                 var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
-                agent = Instantiate(prefab, new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion());
-                agent.Id = newMidi.Id;
+                agent = Instantiate(prefab, transform);
+                agent.ID = newMidi.Id;
                 agent.gameObject.SetActive(true);
 
                 m_Agents.Add(agent);
             }
-            else
-            {
-                float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-                Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
-                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
-            }
+            float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
+            Debug.Log("x: " + newMidi.X + " z: " + newMidi.Z);
+            agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
 
             newMidi.reset();
         }

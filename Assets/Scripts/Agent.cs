@@ -7,31 +7,37 @@ public class Agent : MonoBehaviour
 {
 	// CONFIGURATION
 
-	[SerializeField] int   m_SpeechAnimationsCount;
-	[SerializeField] float m_RotationSpeed = 1f;
+	[SerializeField] int         m_SpeechAnimationsCount;
+	[SerializeField] float       m_RotationSpeed = 1f;
+
+	[Header("Hand Setup")]
+	[SerializeField] Transform   m_HandTransform;
+	[SerializeField] Vector3     m_HandPositionOffset;
+	[SerializeField] Vector3     m_HandRotationOffset;
 
 	// PRIVATE MEMBERS
 
-	private Animator       m_Animator;
-	private NavMeshAgent   m_NavAgent;
+	private Animator             m_Animator;
+	private NavMeshAgent         m_NavAgent;
 
-	private Vector3        m_PointPosition;
-	private Quaternion     m_PointRotation;
+	private Vector3              m_PointPosition;
+	private Quaternion           m_PointRotation;
 
-	private float          m_IdleStart;
-	private float          m_IdleTime;
+	private float                m_IdleStart;
+	private float                m_IdleTime;
 
-	private bool           m_StateUpdated;
+	private bool                 m_StateUpdated;
 
 	// PUBLIC MEMBERS
 
-	public bool            IsIdle             { get; private set; }
-	public bool            IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
-    public int             Id;
+	public int                   ID;
+	public bool                  IsIdle             { get; private set; }
+	public bool                  IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
+	public bool                  CanHoldObject      { get { return m_HandTransform != null; } }
 
-    // SIGNALS
+	// SIGNALS
 
-    public System.Action   StateUpdated;
+	public System.Action         StateUpdated;
 
 	// PUBLIC METHODS
 
@@ -42,6 +48,19 @@ public class Agent : MonoBehaviour
 		m_PointPosition = position;
 		m_PointRotation = rotation;
 		m_IdleTime = idleTime;
+	}
+
+	public void SetHandObject(Transform handObject)
+	{
+		if (m_HandTransform == null || handObject == null)
+			return;
+
+		handObject.SetParent(m_HandTransform);
+		handObject.gameObject.SetActive(true);
+
+		handObject.localPosition = m_HandPositionOffset;
+		handObject.localRotation = Quaternion.Euler(m_HandRotationOffset);
+		handObject.localScale = Vector3.one;
 	}
 
 	// MONOBEHAVIOUR
