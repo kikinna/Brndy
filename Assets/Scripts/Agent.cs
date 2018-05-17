@@ -5,10 +5,14 @@ using UnityEngine.AI;
 
 public class Agent : MonoBehaviour
 {
+	// CONSTANTS
+
+	private static readonly int  ALPHA_ID     = Shader.PropertyToID("Alpha");
+
 	// CONFIGURATION
 
 	[SerializeField] int         m_SpeechAnimationsCount;
-	[SerializeField] float       m_RotationSpeed = 1f;
+	[SerializeField] float       m_RotationSpeed           = 1f;
 
 	[Header("Hand Setup")]
 	[SerializeField] Transform   m_HandTransform;
@@ -20,6 +24,8 @@ public class Agent : MonoBehaviour
 	private Animator             m_Animator;
 	private NavMeshAgent         m_NavAgent;
 
+	private Transform            m_HandObject;
+
 	private Vector3              m_PointPosition;
 	private Quaternion           m_PointRotation;
 
@@ -28,9 +34,18 @@ public class Agent : MonoBehaviour
 
 	private bool                 m_StateUpdated;
 
+	private Material             m_AgentMaterial;
+	private Material             m_HandObjectMaterial;
+
+	private float                m_StartAlpha   = 1f;
+	private float                m_TargetAlpha  = 1f;
+	private float                m_FadeStart;
+	private float                m_FadeDuration;
+
 	// PUBLIC MEMBERS
 
 	public int                   ID;
+	public float                 Alpha              { set { SetAlpha(value); m_StartAlpha = m_TargetAlpha = value; } }
 	public bool                  IsIdle             { get; private set; }
 	public bool                  IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
 	public bool                  CanHoldObject      { get { return m_HandTransform != null; } }
@@ -52,15 +67,48 @@ public class Agent : MonoBehaviour
 
 	public void SetHandObject(Transform handObject)
 	{
-		if (m_HandTransform == null || handObject == null)
+		if (m_HandTransform == null)
 			return;
 
-		handObject.SetParent(m_HandTransform);
-		handObject.gameObject.SetActive(true);
+		if (m_HandObject != null)
+		{
+			Destroy(m_HandObject);
+			Destroy(m_HandObjectMaterial);
 
-		handObject.localPosition = m_HandPositionOffset;
-		handObject.localRotation = Quaternion.Euler(m_HandRotationOffset);
-		handObject.localScale = Vector3.one;
+			m_HandObject = null;
+			m_HandObjectMaterial = null;
+		}
+
+		if (handObject == null)
+			return;
+
+		m_HandObject = handObject;
+		m_HandObjectMaterial = handObject.GetComponentInChildren<Renderer>().material;
+
+		m_HandObject.SetParent(m_HandTransform);
+		m_HandObject.gameObject.SetActive(true);
+
+		m_HandObject.localPosition = m_HandPositionOffset;
+		m_HandObject.localRotation = Quaternion.Euler(m_HandRotationOffset);
+		m_HandObject.localScale = Vector3.one;
+	}
+
+	public void FadeIn(float duration = 0.5f)
+	{
+		m_StartAlpha = GetAlpha();
+		m_TargetAlpha = 1f;
+
+		m_FadeStart = Time.time;
+		m_FadeDuration = duration;
+	}
+
+	public void FadeOut(float duration = 0.5f)
+	{
+		m_StartAlpha = GetAlpha();
+		m_TargetAlpha = 0f;
+
+		m_FadeStart = Time.time;
+		m_FadeDuration = duration;
 	}
 
 	// MONOBEHAVIOUR
@@ -69,6 +117,9 @@ public class Agent : MonoBehaviour
 	{
 		m_Animator = GetComponent<Animator>();
 		m_NavAgent = GetComponent<NavMeshAgent>();
+
+		var renderer = GetComponentInChildren<Renderer>();
+		m_AgentMaterial = renderer.material;
 
 		m_NavAgent.updateRotation = false;
 	}
@@ -97,10 +148,15 @@ public class Agent : MonoBehaviour
 			StateUpdated.SafeInvoke();
 			m_StateUpdated = false;
 		}
+
+		//UpdateAlpha();
 	}
 
 	private void OnDestroy()
 	{
+		Destroy(m_AgentMaterial);
+		Destroy(m_HandObjectMaterial);
+
 		StateUpdated = null;
 	}
 
@@ -126,5 +182,35 @@ public class Agent : MonoBehaviour
 		m_Animator.SetInteger(AnimationID.Speech, speech);
 
 		m_StateUpdated = true;
+	}
+
+	private void UpdateAlpha()
+	{
+		if (GetAlpha().AlmostEquals(m_TargetAlpha) == true)
+			return;
+
+		if (m_FadeDuration == 0f)
+		{
+			SetAlpha(m_TargetAlpha);
+			return;
+		}
+
+		float progress = Mathf.Clamp01((Time.time - m_FadeStart) / m_FadeDuration);
+		SetAlpha(Mathf.Lerp(m_StartAlpha, m_TargetAlpha, progress));
+	}
+
+	private float GetAlpha()
+	{
+		return m_AgentMaterial.GetFloat(ALPHA_ID);
+	}
+
+	private void SetAlpha(float alpha)
+	{
+		m_AgentMaterial.SetFloat(ALPHA_ID, alpha);
+
+		if (m_HandObjectMaterial != null)
+		{
+			m_HandObjectMaterial.SetFloat(ALPHA_ID, alpha);
+		}
 	}
 }

@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: HumanMist
-  m_Shader: {fileID: 4800000, guid: 4d09c8f9969c2404e8e6bd03d3ac1963, type: 3}
+  m_Name: HumanMistDistanceFade
+  m_Shader: {fileID: 4800000, guid: 7dd34f837e1a4b2438775ace2c72095d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -95,6 +95,7 @@ Material:
     - Color_888C7239: {r: 0.6725512, g: 0.6792453, b: 0.55428976, a: 1}
     - Color_9DBC3939: {r: 0.73202205, g: 0.86022735, b: 0.8867924, a: 1}
     - Vector2_2A6150FB: {r: -0.027, g: -0.005, b: 0, a: 0}
+    - Vector2_AC1D96C: {r: 10, g: 30, b: 0, a: 0}
     - Vector2_C965DF61: {r: 0.017, g: -0.01, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
