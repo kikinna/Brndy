@@ -7,7 +7,7 @@ public class Agent : MonoBehaviour
 {
 	// CONSTANTS
 
-	private static readonly int  ALPHA_ID     = Shader.PropertyToID("Alpha");
+	private static readonly int  ALPHA_ID     = Shader.PropertyToID("Vector1_6A5C60BC");
 
 	// CONFIGURATION
 
@@ -149,7 +149,7 @@ public class Agent : MonoBehaviour
 			m_StateUpdated = false;
 		}
 
-		//UpdateAlpha();
+		UpdateAlpha();
 	}
 
 	private void OnDestroy()
