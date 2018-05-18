@@ -176,7 +176,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -400,7 +400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FadeOutTime: 0.3
-  m_SpeechClips: []
+  m_SpeechClips:
+  - Clip: {fileID: 8300000, guid: 77bd6399f2c8b194f8ac8a86b4402628, type: 3}
+    Delay: 0.3
 --- !u!137 &137332963822097010
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

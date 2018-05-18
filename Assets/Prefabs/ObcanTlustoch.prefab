@@ -370,7 +370,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FadeOutTime: 0.3
-  m_SpeechClips: []
+  m_SpeechClips:
+  - Clip: {fileID: 8300000, guid: cb46042685b70c84a9501788abac4615, type: 3}
+    Delay: 0
 --- !u!137 &137795570011901494
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

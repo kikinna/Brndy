@@ -722,7 +722,7 @@ MonoBehaviour:
   - {fileID: 854570267}
   m_AgentsCount: 5
   m_AgentPrefabs:
-  - {fileID: 1727678970}
+  - {fileID: 2128039034}
   m_HandObjectPrefabs:
   - {fileID: 360522089}
   - {fileID: 0}
@@ -814,6 +814,11 @@ Prefab:
     - target: {fileID: 4556083939077292, guid: 27133761d91cd03438952184886db16c, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 82147178913652980, guid: 27133761d91cd03438952184886db16c,
+        type: 2}
+      propertyPath: BypassReverbZones
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27133761d91cd03438952184886db16c, type: 2}
@@ -3202,12 +3207,6 @@ Transform:
   m_Father: {fileID: 1425307907}
   m_RootOrder: 81
   m_LocalEulerAnglesHint: {x: 0, y: 78.19701, z: 0}
---- !u!114 &1727678970 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114127136363717876, guid: 27133761d91cd03438952184886db16c,
-    type: 2}
-  m_PrefabInternal: {fileID: 292393353}
-  m_Script: {fileID: 11500000, guid: 64751f5c633695745ab21375dfb8c764, type: 3}
 --- !u!1001 &1735893761
 Prefab:
   m_ObjectHideFlags: 0
@@ -3428,11 +3427,6 @@ Prefab:
     - target: {fileID: 4720841973661780, guid: 7a52b5ddf830adc4b89e720bf2381c47, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114479448181748558, guid: 7a52b5ddf830adc4b89e720bf2381c47,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7a52b5ddf830adc4b89e720bf2381c47, type: 2}
@@ -3811,6 +3805,12 @@ Transform:
   m_Father: {fileID: 1425307907}
   m_RootOrder: 74
   m_LocalEulerAnglesHint: {x: 0, y: 78.19701, z: 0}
+--- !u!114 &2128039034 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114646521279186536, guid: 7a52b5ddf830adc4b89e720bf2381c47,
+    type: 2}
+  m_PrefabInternal: {fileID: 1841600997}
+  m_Script: {fileID: 11500000, guid: 64751f5c633695745ab21375dfb8c764, type: 3}
 --- !u!1 &2145549431
 GameObject:
   m_ObjectHideFlags: 0
