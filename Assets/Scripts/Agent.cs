@@ -37,6 +37,7 @@ public class Agent : MonoBehaviour
 	private Material             m_AgentMaterial;
 	private Material             m_HandObjectMaterial;
 
+	private bool                 m_UpdateAlpha;
 	private float                m_StartAlpha   = 1f;
 	private float                m_TargetAlpha  = 1f;
 	private float                m_FadeStart;
@@ -120,6 +121,7 @@ public class Agent : MonoBehaviour
 
 		var renderer = GetComponentInChildren<Renderer>();
 		m_AgentMaterial = renderer.material;
+		m_UpdateAlpha = m_AgentMaterial.HasProperty(ALPHA_ID);
 
 		m_NavAgent.updateRotation = false;
 	}
@@ -186,6 +188,9 @@ public class Agent : MonoBehaviour
 
 	private void UpdateAlpha()
 	{
+		if (m_UpdateAlpha == false)
+			return;
+
 		if (GetAlpha().AlmostEquals(m_TargetAlpha) == true)
 			return;
 
