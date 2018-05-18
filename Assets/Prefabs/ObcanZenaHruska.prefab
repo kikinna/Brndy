@@ -142,7 +142,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f15cb147184f0d04d809e86e4a0f513a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -237,7 +237,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a68fba7a3a45e384db05125d56583629, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -353,7 +353,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FadeOutTime: 0.3
-  m_SpeechClips: []
+  m_SpeechClips:
+  - Clip: {fileID: 8300000, guid: a68fba7a3a45e384db05125d56583629, type: 3}
+    Delay: 0
 --- !u!114 &114613571112186078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -367,6 +369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpeechAnimationsCount: 1
   m_RotationSpeed: 5
+  m_HandTransform: {fileID: 0}
+  m_HandPositionOffset: {x: 0, y: 0, z: 0}
+  m_HandRotationOffset: {x: 0, y: 0, z: 0}
+  ID: 0
 --- !u!137 &137711486471792344
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
