@@ -385,6 +385,8 @@ MonoBehaviour:
   m_SpeechClips:
   - Clip: {fileID: 8300000, guid: 91312188d32d11c4d92a0789a2245e61, type: 3}
     Delay: 0.2
+  - Clip: {fileID: 8300000, guid: 91312188d32d11c4d92a0789a2245e61, type: 3}
+    Delay: 0.2
 --- !u!114 &114790292288892188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -396,7 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64751f5c633695745ab21375dfb8c764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SpeechAnimationsCount: 1
+  m_SpeechAnimationsCount: 2
   m_RotationSpeed: 5
   m_IgnoreDistance: 1
   m_HandTransform: {fileID: 4884885756655426}
