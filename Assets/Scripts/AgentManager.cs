@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentManager : MonoBehaviour
@@ -7,20 +6,73 @@ public class AgentManager : MonoBehaviour
 	// INSPECTOR FIELDS
 
 	[SerializeField] Vector2           m_IdleInterval       = new Vector2(3f, 5f);
+
 	[SerializeField] Transform[]       m_InterestingPoints;
-	[SerializeField] int               m_AgentsCount;
-	[SerializeField] Agent[]           m_AgentPrefabs;
-	[SerializeField] Transform[]       m_HandObjectPrefabs;
+	[SerializeField] Transform[]       m_OutPoints;
+
+	[SerializeField] AgentSetup[]      m_AgentSetups;
 
 	// PRIVATE MEMBERS
 
-	private List<Agent>                m_Agents             = new List<Agent>(48);
 	private List<AgentPoint>           m_AgentPoints        = new List<AgentPoint>(48);
-	private List<MidiColector>         m_MidiColectors      = new List<MidiColector>(48);
 
-    // MONOBEHAVIOUR
+	// PUBLIC METHODS
 
-    private void Awake()
+	public void StartAutoMode()
+	{
+	}
+
+	public void StopAutoMode()
+	{
+	}
+
+	public void AgentDisappeared(int id)
+	{
+		for (int i = 0; i < m_AgentSetups.Length; i++)
+		{
+			m_AgentSetups[i].Despawn(id);
+		}
+	}
+
+	public void AgentPositionUpdated(int id, Vector3 position)
+	{
+		for (int i = 0; i < m_AgentSetups.Length; i++)
+		{
+			var setup = m_AgentSetups[i];
+
+			if (setup.HasAgent(id) == true)
+			{
+				setup.UpdateAgentPosition(id, position);
+				return;
+			}
+		}
+
+		int randomStart = Random.Range(0, m_AgentSetups.Length);
+
+		for (int i = randomStart; i < m_AgentSetups.Length; i++)
+		{
+			var setup = m_AgentSetups[i];
+
+			if (setup.IsAutonomous == true || setup.CanSpawnAgent == false)
+				continue;
+
+			setup.UpdateAgentPosition(id, position);
+		}
+
+		for (int i = 0; i < randomStart; i++)
+		{
+			var setup = m_AgentSetups[i];
+
+			if (setup.IsAutonomous == true || setup.CanSpawnAgent == false)
+				continue;
+
+			setup.UpdateAgentPosition(id, position);
+		}
+	}
+
+	// MONOBEHAVIOUR
+
+	private void Awake()
 	{
 		for (int i = 0; i < m_InterestingPoints.Length; i++)
 		{
@@ -32,62 +84,40 @@ public class AgentManager : MonoBehaviour
 			m_AgentPoints.Add(new AgentPoint(point));
 		}
 
-		if (m_InterestingPoints.Length < m_AgentsCount + 1)
+		for (int i = 0; i < m_AgentSetups.Length; i++)
 		{
-			Debug.LogError("Not enough interesting points");
-			return;
-		}
-
-		int handObjectsCount = m_HandObjectPrefabs.Length;
-
-		for (int i = 0; i < m_AgentsCount; i++)
-		{
-			var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
-			var agent = Instantiate(prefab, transform);
-
-			if (handObjectsCount > 0 && agent.CanHoldObject == true)
-			{
-				var objectPrefab = m_HandObjectPrefabs[Random.Range(0, handObjectsCount)];
-				var objectInstance = objectPrefab != null ? Instantiate(objectPrefab) : null;
-
-				agent.SetHandObject(objectInstance);
-			}
-
-			agent.gameObject.SetActive(true);
-
-			m_Agents.Add(agent);
-		}
-	}
-
-	private void Start()
-	{
-		for (int i = 0; i < m_Agents.Count; i++)
-		{
-			FindNewPointForAgent(m_Agents[i], i);
+			m_AgentSetups[i].Iniatialize(transform);
 		}
 	}
 
 	private void Update()
 	{
-		CheckAgentsPositions();
+		CheckAutonomousAgentsPositions();
+
+		for (int i = 0; i < m_AgentSetups.Length; i++)
+		{
+			m_AgentSetups[i].ReturnFinished();
+		}
 	}
 
 	// PRIVATE MEMBERS
 
-	private void CheckAgentsPositions()
+	private void CheckAutonomousAgentsPositions()
 	{
-		for (int i = 0; i < m_Agents.Count; i++)
+		for (int i = 0; i < m_AgentSetups.Length; i++)
 		{
-			var agent = m_Agents[i];
+			var setup = m_AgentSetups[i];
 
-			if (agent.IsFinished == false)
+			var freeAgent = setup.GetFreeAutonomousAgent();
+
+			if (freeAgent == null)
 				continue;
 
-			FindNewPointForAgent(agent, i);
+			FindNewPointForAgent(freeAgent);
 		}
 	}
 
-	private void FindNewPointForAgent(Agent agent, int agentIndex)
+	private void FindNewPointForAgent(Agent agent)
 	{
 		var point = GetFreeAgentPoint();
 
@@ -97,15 +127,13 @@ public class AgentManager : MonoBehaviour
 			return;
 		}
 
-		FreeAgentPoint(agentIndex);
-
-		point.IsOccupied = true;
-		point.AgentIndex = agentIndex;
+		FreeAgentPoint(agent);
+		point.Agent = agent;
 
 		float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-        //Debug.Log("x: " + point.Transform.position.x + " " + "z: " + point.Transform.position.z);
-        agent.GoToPoint(point.Transform.position, idleTime);
-    }
+		//Debug.Log("x: " + point.Transform.position.x + " " + "z: " + point.Transform.position.z);
+		agent.GoToPoint(point.Transform.position, idleTime);
+	}
 
 	private AgentPoint GetFreeAgentPoint()
 	{
@@ -133,15 +161,14 @@ public class AgentManager : MonoBehaviour
 		return null;
 	}
 
-	private void FreeAgentPoint(int agentIndex)
+	private void FreeAgentPoint(Agent agent)
 	{
-		var agentPoint = m_AgentPoints.Find(t => t.AgentIndex == agentIndex);
+		var agentPoint = m_AgentPoints.Find(t => t.Agent == agent);
 
 		if (agentPoint == null)
 			return;
 
-		agentPoint.IsOccupied = false;
-		agentPoint.AgentIndex = -1;
+		agentPoint.Agent = null;
 	}
 
 	// HELPERS
@@ -149,8 +176,8 @@ public class AgentManager : MonoBehaviour
 	private class AgentPoint
 	{
 		public Transform      Transform;
-		public bool           IsOccupied;
-		public int            AgentIndex;
+		public Agent          Agent;
+		public bool           IsOccupied   { get { return Agent != null; } }
 
 		public AgentPoint(Transform transform)
 		{
@@ -158,104 +185,115 @@ public class AgentManager : MonoBehaviour
 		}
 	}
 
-    // Listen to MIDI reciever
-    void OnNoteOn(MidiMessage midi)
-    {
-        var newMidi = m_MidiColectors.Find(t => t.Id == midi.data1);
-        if (newMidi == null)
-        {
-            newMidi = new MidiColector(midi.data1);
-            m_MidiColectors.Add(newMidi);
-        }
+	[System.Serializable]
+	private class AgentSetup
+	{
+		public Agent                    AgentPrefab;
+		public bool                     IsAutonomous;
+		public int                      MaxAgents = 5;
+		public Transform[]              HandObjectPrefabs;
 
-        if (midi.status == 0xB0) // x
-        {
-            newMidi.recievedMessages++;
-            newMidi.X = midi.data2;
-        }
-        if (midi.status == 0xB1) // y => z
-        {
-            newMidi.recievedMessages++;
-            newMidi.Z = midi.data2;
-        }
-        if (midi.status == 0xB2) // Dead agent message
-        {
-            m_MidiColectors.Remove(newMidi);
-            var agent = m_Agents.Find(t => t.ID == newMidi.Id);
-            agent.gameObject.SetActive(false);
-            m_Agents.Remove(agent);
-        }
+		public bool                     CanSpawnAgent              { get { return m_Agents.Count < MaxAgents; } }
 
-        if (newMidi.Xset && newMidi.Zset && newMidi.recievedMessages == newMidi.ExpectedMessageCount)
-        {
-            var agent = m_Agents.Find(t => t.ID == newMidi.Id);
-            if (agent == null)
-            {
-                var prefab = m_AgentPrefabs[Random.Range(0, m_AgentPrefabs.Length)];
-                agent = Instantiate(prefab, new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion());
-                agent.ID = newMidi.Id;
-                agent.gameObject.SetActive(true);
+		private ResourceCache<Agent>    m_AgentCache = new ResourceCache<Agent>();
+		private List<Agent>             m_Agents     = new List<Agent>(12);
 
-                m_Agents.Add(agent);
-            }
-            else
-            {
-                float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
-                Debug.Log("ID: " + agent.ID + " x: " + newMidi.X + " z: " + newMidi.Z);
-                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), idleTime);
-            }
+		private Transform               m_ParentTransform;
 
-            newMidi.reset();
-        }
-    }
-}
+		public void Iniatialize(Transform parentTransform)
+		{
+			m_AgentCache.Initialize(AgentPrefab, Mathf.Min(MaxAgents, 8));
 
-public class MidiColector
-{
-    public bool Xset = false;
-    public bool Zset = false;
-    public int ExpectedMessageCount = 2;
-    public int recievedMessages = 0;
+			m_ParentTransform = parentTransform;
+		}
 
-    public int  Id;
-    public float X {
-        get { return m_X; }
-        set
-        {
-            m_X = -ConvertRange(0, 127, -15, 15, value); // first two values must be set by width and height of processing window
-            Xset = true;
-        }
-    }
-    public float Z
-    {
-        get { return m_Z; }
-        set
-        {
-            m_Z = ConvertRange(0, 127, -20, 7, value);
-            Zset = true;
-        }
-    }
+		public bool HasAgent(int id)
+		{
+			if (IsAutonomous == true)
+				return false;
 
-    private float m_X;
-    private float m_Z;
+			return m_Agents.Find(t => t.ID == id) != null;
+		}
 
-    public MidiColector(int id)
-    {
-        Id = id;
-    }
+		public void UpdateAgentPosition(int id, Vector3 position)
+		{
+			var agent = m_Agents.Find(t => t.ID == id);
 
-    public void reset()
-    {
-        Xset = false;
-        Zset = false;
-        recievedMessages = 0;
-    }
+			if (agent == null)
+			{
+				agent = GetAgent(position);
+				agent.ID = id;
+			}
 
-    private float ConvertRange(int originalStart, int originalEnd, // original range
-                               float newStart, float newEnd, // desired range
-                               float value) // value to convert
-    {
-        float scale = (float)(newEnd - newStart) / (originalEnd - originalStart);
-        return (float)(newStart + ((value - originalStart) * scale));
-    }
+			agent.GoToPoint(position);
+		}
+
+		public Agent GetFreeAutonomousAgent()
+		{
+			if (IsAutonomous == false)
+				return null;
+
+			for (int i = 0; i < m_Agents.Count; i++)
+			{
+				var agent = m_Agents[i];
+
+				if (agent.IsWaiting == true)
+					return agent;
+			}
+
+			return CanSpawnAgent == true ? GetAgent(m_ParentTransform.position) : null;
+		}
+
+		public void Despawn(int id)
+		{
+			var agent = m_Agents.Find(t => t.ID == id);
+
+			if (agent == null)
+				return;
+
+			agent.Despawn();
+		}
+
+		public void ReturnFinished()
+		{
+			for (int i = m_Agents.Count - 1; i >= 0; i--)
+			{
+				var agent = m_Agents[i];
+
+				if (agent.IsFinished == false)
+					continue;
+
+				agent.gameObject.SetActive(false);
+				agent.RemoveHandObject();
+
+				m_AgentCache.Return(agent);
+
+				m_Agents.Remove(agent);
+			}
+		}
+
+		private Agent GetAgent(Vector3 initialPosition)
+		{
+			var agent = m_AgentCache.Get();
+
+			agent.transform.SetParent(m_ParentTransform);
+			agent.transform.position = initialPosition;
+
+			agent.gameObject.SetActive(true);
+
+			int handObjectsCount = HandObjectPrefabs.Length;
+
+			if (handObjectsCount > 0 && agent.CanHoldObject == true)
+			{
+				var objectPrefab = HandObjectPrefabs[Random.Range(0, handObjectsCount)];
+				var objectInstance = objectPrefab != null ? Instantiate(objectPrefab) : null;
+
+				agent.SetHandObject(objectInstance);
+			}
+
+			m_Agents.Add(agent);
+
+			return agent;
+		}
+	}
 }
