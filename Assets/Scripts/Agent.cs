@@ -57,7 +57,7 @@ public class Agent : MonoBehaviour
 
 	// PUBLIC METHODS
 
-	public void GoToPoint(Vector3 position, Quaternion rotation, float idleTime)
+	public void GoToPoint(Vector3 position, Quaternion rotation, float idleTime = 0f)
 	{
 		m_NavAgent.SetDestination(position);
 
@@ -134,7 +134,7 @@ public class Agent : MonoBehaviour
 	private void Update()
 	{
 		m_PointPosition.y = transform.position.y;
-		bool isIdle = m_PointPosition.AlmostEquals(transform.position, 0.1f);
+		bool isIdle = m_NavAgent.velocity.AlmostEquals(Vector3.zero);
 
 		if (isIdle != IsIdle)
 		{
