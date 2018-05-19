@@ -57,6 +57,7 @@ public class AgentManager : MonoBehaviour
 				continue;
 
 			setup.UpdateAgentPosition(id, position);
+			return;
 		}
 
 		for (int i = 0; i < randomStart; i++)
@@ -67,6 +68,7 @@ public class AgentManager : MonoBehaviour
 				continue;
 
 			setup.UpdateAgentPosition(id, position);
+			return;
 		}
 	}
 
@@ -202,7 +204,7 @@ public class AgentManager : MonoBehaviour
 
 		public void Iniatialize(Transform parentTransform)
 		{
-			m_AgentCache.Initialize(AgentPrefab, Mathf.Min(MaxAgents, 8));
+			m_AgentCache.Initialize(AgentPrefab, Mathf.Min(MaxAgents, 2));
 
 			m_ParentTransform = parentTransform;
 		}
