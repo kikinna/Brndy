@@ -104,7 +104,7 @@ public class AgentManager : MonoBehaviour
 
 		float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
         //Debug.Log("x: " + point.Transform.position.x + " " + "z: " + point.Transform.position.z);
-        agent.GoToPoint(point.Transform.position, point.Transform.rotation, idleTime);
+        agent.GoToPoint(point.Transform.position, idleTime);
     }
 
 	private AgentPoint GetFreeAgentPoint()
@@ -202,7 +202,7 @@ public class AgentManager : MonoBehaviour
             {
                 float idleTime = Random.Range(m_IdleInterval.x, m_IdleInterval.y);
                 Debug.Log("ID: " + agent.ID + " x: " + newMidi.X + " z: " + newMidi.Z);
-                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), new Quaternion(), idleTime);
+                agent.GoToPoint(new Vector3(newMidi.X, 0, newMidi.Z), idleTime);
             }
 
             newMidi.reset();

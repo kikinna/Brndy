@@ -57,6 +57,14 @@ public class Agent : MonoBehaviour
 
 	// PUBLIC METHODS
 
+	public void GoToPoint(Vector3 position, float idleTime = 0f)
+	{
+		var camera = Camera.main;
+		var rotation = Quaternion.LookRotation(camera.transform.position - position, Vector3.up);
+
+		GoToPoint(position, rotation, idleTime);
+	}
+
 	public void GoToPoint(Vector3 position, Quaternion rotation, float idleTime = 0f)
 	{
 		m_NavAgent.SetDestination(position);
