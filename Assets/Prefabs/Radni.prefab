@@ -384,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpeechAnimationsCount: 1
   m_RotationSpeed: 5
+  m_IgnoreDistance: 1
   m_HandTransform: {fileID: 0}
   m_HandPositionOffset: {x: 0, y: 0, z: 0}
   m_HandRotationOffset: {x: 0, y: 0, z: 0}
@@ -419,7 +420,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 7587fd4589066bd49a9c884b4205227f, type: 2}
+  - {fileID: 2100000, guid: 26f768b0cd0614f489010ed6594abeb6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
