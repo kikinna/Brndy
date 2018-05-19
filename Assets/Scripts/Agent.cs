@@ -84,7 +84,6 @@ public class Agent : MonoBehaviour
 	{
 		if (fadeOutDuration > 0.01f)
 		{
-			FadeOut(fadeOutDuration);
 			StartCoroutine(DelayedFinish_Coroutine(fadeOutDuration));
 		}
 		else
@@ -192,6 +191,11 @@ public class Agent : MonoBehaviour
 		UpdateMovement(true);
 	}
 
+	private void OnEnable()
+	{
+		IsFinished = false;
+	}
+
 	private void Update()
 	{
 		m_PointPosition.y = transform.position.y;
@@ -284,6 +288,10 @@ public class Agent : MonoBehaviour
 
 	private IEnumerator DelayedFinish_Coroutine(float delay)
 	{
+		while (IsIdle == false)
+			yield return null;
+
+		FadeOut(fadeOutDuration);
 		yield return new WaitForSeconds(delay);
 
 		IsFinished = true;
