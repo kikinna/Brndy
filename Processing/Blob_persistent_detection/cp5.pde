@@ -4,6 +4,13 @@
 //////////////////////////
 
 void initControls() {
+  // Slider for bbrightnes
+  //cp5.addSlider("brightness")
+  //   .setLabel("brightness")
+  //   .setPosition(20,20)
+  //   .setRange(0.0,6.0)
+  //   ;
+
   // Slider for contrast
   cp5.addSlider("contrast")
      .setLabel("contrast")
@@ -50,13 +57,13 @@ void initControls() {
   cp5.addButton("updateBckgMask")
     .setLabel("Update background mask")
     .setPosition(20, 240)
-    .setSize(200, 20)
+    .setSize(200, 30)
     ;
       
   // Remove background mask
   cp5.addButton("removeBckgMask")
     .setLabel("Remove background mask")
-    .setPosition(20, 270)
+    .setPosition(20, 280)
     .setSize(200, 20)
     ;
     
@@ -81,7 +88,7 @@ void initControls() {
      .setLabel("Max blob size")
      .setPosition(20, 390)
      .setSize(128, 15)
-     .setRange(60, 300)
+     .setRange(60, 400)
      .setValue(200)
      ;
 
