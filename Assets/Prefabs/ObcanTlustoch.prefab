@@ -78,6 +78,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1828107110695192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4398390938559372}
+  m_Layer: 0
+  m_Name: DEF-hand.R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4032723256463636
 Transform:
   m_ObjectHideFlags: 1
@@ -88,10 +103,24 @@ Transform:
   m_LocalPosition: {x: 1.848, y: -1, z: 0}
   m_LocalScale: {x: 0.98, y: 0.9799999, z: 0.9799999}
   m_Children:
+  - {fileID: 4398390938559372}
   - {fileID: 4595051734666840}
   - {fileID: 4409102291507054}
   - {fileID: 4473226027217926}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4398390938559372
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1828107110695192}
+  m_LocalRotation: {x: -0.18716852, y: -0.63373274, z: -0.49661312, w: 0.5627843}
+  m_LocalPosition: {x: 68.48628, y: 22.77127, z: -145.62854}
+  m_LocalScale: {x: 10160.407, y: 10208.799, z: 8414.013}
+  m_Children: []
+  m_Father: {fileID: 4032723256463636}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4409102291507054
@@ -105,7 +134,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4032723256463636}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4473226027217926
 Transform:
@@ -118,7 +147,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4032723256463636}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4595051734666840
 Transform:
@@ -131,7 +160,7 @@ Transform:
   m_LocalScale: {x: 100, y: 99.99994, z: 99.99994}
   m_Children: []
   m_Father: {fileID: 4032723256463636}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!82 &82912346068559466
 AudioSource:
@@ -354,9 +383,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpeechAnimationsCount: 1
   m_RotationSpeed: 5
-  m_HandTransform: {fileID: 0}
-  m_HandPositionOffset: {x: 0, y: 0, z: 0}
-  m_HandRotationOffset: {x: 0, y: 0, z: 0}
+  m_IgnoreDistance: 1
+  m_HandTransform: {fileID: 4398390938559372}
+  m_HandPositionOffset: {x: 0.00043, y: 0.00071, z: 0.00016}
+  m_HandRotationOffset: {x: 5.16, y: -22.708, z: 91.591}
+  m_HandObject: {fileID: 0}
   ID: 0
 --- !u!114 &114184601545766364
 MonoBehaviour:
