@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4521982026117428, guid: 317b0ac76607fb24484194082580f6b8, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 317b0ac76607fb24484194082580f6b8, type: 2}
@@ -192,7 +192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4507807735312918, guid: 2207951612f36fe4da0994a55fcdcfe3, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2207951612f36fe4da0994a55fcdcfe3, type: 2}
@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ede0b51426b5ac94791597a086214539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IdleInterval: {x: 3, y: 5}
+  m_IdleInterval: {x: 3, y: 8}
   m_InterestingPoints:
   - {fileID: 461883642}
   - {fileID: 1620994764}
@@ -453,38 +453,38 @@ MonoBehaviour:
     MaxAgents: 1
     HandObjectPrefabs: []
   - AgentPrefab: {fileID: 1687123864}
-    IsAutonomous: 1
-    MaxAgents: 10
+    IsAutonomous: 0
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4151408041012984, guid: ddbad3e6eac29d24ea572b6c3caaef5e, type: 2}
   - AgentPrefab: {fileID: 61669325}
     IsAutonomous: 0
-    MaxAgents: 10
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4508854889781506, guid: 9a56fe4d5db05ed4d89dd0ca3fd54d7e, type: 2}
   - AgentPrefab: {fileID: 1585606448}
     IsAutonomous: 0
-    MaxAgents: 10
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4508854889781506, guid: 9a56fe4d5db05ed4d89dd0ca3fd54d7e, type: 2}
   - AgentPrefab: {fileID: 669528064}
     IsAutonomous: 0
-    MaxAgents: 10
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4978157887757380, guid: 4d214991bde870f459e0bdab12fc8beb, type: 2}
   - AgentPrefab: {fileID: 1127781849}
     IsAutonomous: 0
-    MaxAgents: 10
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4978157887757380, guid: 4d214991bde870f459e0bdab12fc8beb, type: 2}
   - AgentPrefab: {fileID: 419480347}
     IsAutonomous: 0
-    MaxAgents: 10
+    MaxAgents: 5
     HandObjectPrefabs:
     - {fileID: 0}
     - {fileID: 4978157887757380, guid: 4d214991bde870f459e0bdab12fc8beb, type: 2}
@@ -495,7 +495,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 276658847}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.63, y: 0, z: 3.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1913079521}
@@ -563,7 +563,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4556083939077292, guid: 27133761d91cd03438952184886db16c, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27133761d91cd03438952184886db16c, type: 2}
@@ -972,7 +972,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4032723256463636, guid: 1fa19615a5fcf244690bcc05c702a043, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1fa19615a5fcf244690bcc05c702a043, type: 2}
@@ -1114,7 +1114,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4455679738855036, guid: 31085b1cff0a8c44da8d3ac2fb0e8310, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31085b1cff0a8c44da8d3ac2fb0e8310, type: 2}
@@ -2192,7 +2192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4936653904154938, guid: ddd033e7ff98631459c383ba37aba500, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddd033e7ff98631459c383ba37aba500, type: 2}
@@ -2302,7 +2302,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4540055867890160, guid: e30ef7e9f7e1da64c9d4e17b33c1c735, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e30ef7e9f7e1da64c9d4e17b33c1c735, type: 2}
@@ -2344,7 +2344,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4720841973661780, guid: 7a52b5ddf830adc4b89e720bf2381c47, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7a52b5ddf830adc4b89e720bf2381c47, type: 2}
