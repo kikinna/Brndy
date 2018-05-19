@@ -16,6 +16,6 @@ void sendMidiMessage(Blob b) {
 }
 
 void sendMidiDead(Blob b) {
-  print("Sending", "id:", b.id, "I am dead!", "\n");
+  print("Sending", "id:", b.id % 128, "I am dead!", "\n");
   midiBus.sendControllerChange(2, b.id, 0);
 }
