@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class Agent : MonoBehaviour
 {
+	// CLASSES / STRUCTS / ENUMS
+
+	
+
 	// CONSTANTS
 
 	private static readonly int  ALPHA_ID     = Shader.PropertyToID("Vector1_6A5C60BC");
@@ -48,7 +52,8 @@ public class Agent : MonoBehaviour
 	public int                   ID;
 	public float                 Alpha              { set { SetAlpha(value); m_StartAlpha = m_TargetAlpha = value; } }
 	public bool                  IsIdle             { get; private set; }
-	public bool                  IsFinished         { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
+	public bool                  IsWaiting          { get { return IsIdle == true && m_IdleStart + m_IdleTime < Time.time; } }
+	public bool                  IsFinished         { get; private set; }
 	public bool                  CanHoldObject      { get { return m_HandTransform != null; } }
 
 	// SIGNALS
@@ -56,6 +61,36 @@ public class Agent : MonoBehaviour
 	public System.Action         StateUpdated;
 
 	// PUBLIC METHODS
+
+	public void Spawn(float fadeInDuration = 0.5f)
+	{
+		gameObject.SetActive(true);
+
+		if (fadeInDuration > 0.1f)
+		{
+			Alpha = 0f;
+			FadeIn(fadeInDuration);
+		}
+		else
+		{
+			Alpha = 1f;
+		}
+
+		IsFinished = false;
+	}
+
+	public void Despawn(float fadeOutDuration = 0.5f)
+	{
+		if (fadeOutDuration > 0.01f)
+		{
+			FadeOut(fadeOutDuration);
+			StartCoroutine(DelayedFinish_Coroutine(fadeOutDuration));
+		}
+		else
+		{
+			IsFinished = true;
+		}
+	}
 
 	public void GoToPoint(Vector3 position, float idleTime = 0f)
 	{
@@ -100,6 +135,15 @@ public class Agent : MonoBehaviour
 		m_HandObject.localPosition = m_HandPositionOffset;
 		m_HandObject.localRotation = Quaternion.Euler(m_HandRotationOffset);
 		m_HandObject.localScale = Vector3.one;
+	}
+
+	public void RemoveHandObject()
+	{
+		if (m_HandObject == null)
+			return;
+
+		Destroy(m_HandObject);
+		Destroy(m_HandObjectMaterial);
 	}
 
 	public void FadeIn(float duration = 0.5f)
@@ -230,5 +274,14 @@ public class Agent : MonoBehaviour
 		{
 			m_HandObjectMaterial.SetFloat(ALPHA_ID, alpha);
 		}
+	}
+
+	// COROUTINES
+
+	private IEnumerator DelayedFinish_Coroutine(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+
+		IsFinished = true;
 	}
 }
