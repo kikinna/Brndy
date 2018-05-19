@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64751f5c633695745ab21375dfb8c764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SpeechAnimationsCount: 1
+  m_SpeechAnimationsCount: 2
   m_RotationSpeed: 5
   m_IgnoreDistance: 1
   m_HandTransform: {fileID: 4116627586883090}
