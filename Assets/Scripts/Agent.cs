@@ -17,6 +17,7 @@ public class Agent : MonoBehaviour
 
 	[SerializeField] int         m_SpeechAnimationsCount;
 	[SerializeField] float       m_RotationSpeed           = 1f;
+	[SerializeField] float       m_IgnoreDistance          = 1f;
 
 	[Header("Hand Setup")]
 	[SerializeField] Transform   m_HandTransform;
@@ -102,6 +103,9 @@ public class Agent : MonoBehaviour
 
 	public void GoToPoint(Vector3 position, Quaternion rotation, float idleTime = 0f)
 	{
+		if (Vector3.Distance(position, transform.position) < m_IgnoreDistance)
+			return;
+
 		m_NavAgent.SetDestination(position);
 
 		m_PointPosition = position;
@@ -116,7 +120,7 @@ public class Agent : MonoBehaviour
 
 		if (m_HandObject != null)
 		{
-			Destroy(m_HandObject);
+			Destroy(m_HandObject.gameObject);
 			Destroy(m_HandObjectMaterial);
 
 			m_HandObject = null;
@@ -142,7 +146,7 @@ public class Agent : MonoBehaviour
 		if (m_HandObject == null)
 			return;
 
-		Destroy(m_HandObject);
+		Destroy(m_HandObject.gameObject);
 		Destroy(m_HandObjectMaterial);
 	}
 
