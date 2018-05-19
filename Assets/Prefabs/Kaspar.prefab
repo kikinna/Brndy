@@ -237,7 +237,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ff897755e8cf90d4ba53b230d07a61c1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2bbb7c2e717c7f14891d6dbd229f0a24, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FadeOutTime: 0.3
   m_SpeechClips:
-  - Clip: {fileID: 8300000, guid: c88ace9d4cf41804aa2df21324fdbed1, type: 3}
+  - Clip: {fileID: 8300000, guid: d507b7e651ff82c469199c2028185706, type: 3}
     Delay: 0.3
   - Clip: {fileID: 8300000, guid: d507b7e651ff82c469199c2028185706, type: 3}
     Delay: 0.3
