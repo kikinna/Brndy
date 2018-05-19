@@ -282,6 +282,7 @@ public class AgentManager : MonoBehaviour
 			agent.transform.position = initialPosition;
 
 			agent.gameObject.SetActive(true);
+			agent.Spawn();
 
 			int handObjectsCount = HandObjectPrefabs.Length;
 
