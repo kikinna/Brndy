@@ -23,7 +23,7 @@ class Blob {
   public boolean delete;
   
   // How long should I live if I have disappeared?
-  private int initTimer = 50; //127;
+  private int initTimer; // = 50; //127;
   public int timer;
   
   // Unique ID for each blob
@@ -36,6 +36,7 @@ class Blob {
     this.parent = parent;
     this.id = id;
     this.contour = new Contour(parent, c.pointMat);
+    this.initTimer = blobLife;
     
     available = true;
     delete = false;
