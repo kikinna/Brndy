@@ -286,13 +286,13 @@ public class Agent : MonoBehaviour
 
 	// COROUTINES
 
-	private IEnumerator DelayedFinish_Coroutine(float delay)
+	private IEnumerator DelayedFinish_Coroutine(float fadeOutDuration)
 	{
 		while (IsIdle == false)
 			yield return null;
 
 		FadeOut(fadeOutDuration);
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSeconds(fadeOutDuration);
 
 		IsFinished = true;
 	}
