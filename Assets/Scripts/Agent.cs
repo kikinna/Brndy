@@ -18,13 +18,13 @@ public class Agent : MonoBehaviour
 	[SerializeField] Transform   m_HandTransform;
 	[SerializeField] Vector3     m_HandPositionOffset;
 	[SerializeField] Vector3     m_HandRotationOffset;
+	[SerializeField] Transform   m_HandObject;
 
 	// PRIVATE MEMBERS
 
 	private Animator             m_Animator;
 	private NavMeshAgent         m_NavAgent;
 
-	private Transform            m_HandObject;
 
 	private Vector3              m_PointPosition;
 	private Quaternion           m_PointRotation;
@@ -132,6 +132,11 @@ public class Agent : MonoBehaviour
 		m_UpdateAlpha = m_AgentMaterial.HasProperty(ALPHA_ID);
 
 		m_NavAgent.updateRotation = false;
+
+		if (m_HandObject != null)
+		{
+			m_HandObjectMaterial = m_HandObject.GetComponentInChildren<Renderer>().material;
+		}
 	}
 
 	private void Start()

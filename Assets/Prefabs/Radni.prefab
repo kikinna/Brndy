@@ -387,6 +387,7 @@ MonoBehaviour:
   m_HandTransform: {fileID: 0}
   m_HandPositionOffset: {x: 0, y: 0, z: 0}
   m_HandRotationOffset: {x: 0, y: 0, z: 0}
+  m_HandObject: {fileID: 4793147109621660}
   ID: 0
 --- !u!114 &114608261603066796
 MonoBehaviour:
