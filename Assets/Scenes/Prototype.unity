@@ -734,7 +734,7 @@ MonoBehaviour:
     HandObjectPrefabs: []
   - AgentPrefab: {fileID: 1049639759}
     IsAutonomous: 1
-    MaxAgents: 3
+    MaxAgents: 1
     HandObjectPrefabs: []
   - AgentPrefab: {fileID: 1687123864}
     IsAutonomous: 0
