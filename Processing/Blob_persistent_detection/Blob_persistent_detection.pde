@@ -58,7 +58,7 @@ int buttonColor;
 int buttonBgColor;
 
 void setup() {
-  frameRate(10); //<>// //<>//
+  frameRate(10); //<>// //<>// //<>//
   
   background(11);
   
@@ -97,9 +97,9 @@ void updateMask(PImage input) {
 
 void draw() {
   // Load the new frame of our camera in to OpenCV
-  PImage opencvInput = kinect.getDepthImage(); //<>//
+  PImage opencvInput = kinect.getDepthImage(); //<>// //<>//
   opencv.loadImage(opencvInput);
-  src = opencv.getInput().copy(); //<>//
+  src = opencv.getInput().copy(); //<>// //<>//
   
   ///////////////////////////////
   // <1> PRE-PROCESS IMAGE
@@ -137,7 +137,7 @@ void draw() {
   }
 
   // Invert (black bg, white blobs)
-  opencv.invert();
+  //opencv.invert();
   
   // Reduce noise - Dilate and erode to close holes
   opencv.dilate();
