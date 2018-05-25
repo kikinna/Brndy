@@ -24,6 +24,8 @@ void setup() {
   // For windows we need to install and set Loop Internal MIDI as MIDI output
   MidiBus.list();
   midiBus = new MidiBus(this, 0, "LoopBe Internal MIDI");
+  
+  //killAll();
 }
 
 void draw() {
@@ -44,6 +46,15 @@ void mouseReleased() {
   mouseDown = false;
   currentIndex = 0;
   midiBlobs = new Blob[128];
+}
+
+void killAll() {
+  for(int i = 0; i < 128; i++) {
+      //print("Sending", "id:", i, "x:", midiBlobs[i].x, "y:", midiBlobs[i].y, "r:", midiBlobs[i].r, "\n");
+     // midiBus.sendControllerChange(0, i, midiBlobs[i].x);
+      //midiBus.sendControllerChange(1, i, midiBlobs[i].y);
+      midiBus.sendControllerChange(2, i, 0);
+  }
 }
 
 void sendMidiMessages() {
