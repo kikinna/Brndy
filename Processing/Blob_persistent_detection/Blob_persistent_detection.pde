@@ -58,7 +58,7 @@ int buttonColor;
 int buttonBgColor;
 
 void setup() {
-  frameRate(10); //<>// //<>// //<>//
+  frameRate(10); //<>// //<>// //<>// //<>//
   
   background(11);
   
@@ -97,9 +97,9 @@ void updateMask(PImage input) {
 
 void draw() {
   // Load the new frame of our camera in to OpenCV
-  PImage opencvInput = kinect.getDepthImage(); //<>// //<>//
+  PImage opencvInput = kinect.getDepthImage(); //<>// //<>// //<>//
   opencv.loadImage(opencvInput);
-  src = opencv.getInput().copy(); //<>// //<>//
+  src = opencv.getInput().copy(); //<>// //<>// //<>//
   
   ///////////////////////////////
   // <1> PRE-PROCESS IMAGE
@@ -156,10 +156,10 @@ void draw() {
   opencvImg.blend(bckgSub, 0, 0, bckgSub.width, bckgSub.height, 0, 0, bckgSub.width, bckgSub.height, SUBTRACT);
   opencv.loadImage(opencvImg);
   
-  ////opencv.erode();
+  opencv.erode();
   opencv.erode();
   opencv.dilate();
-  //opencv.dilate();
+  opencv.dilate();
   
   // Save snapshot for display
   processedImage = opencv.getOutput();
