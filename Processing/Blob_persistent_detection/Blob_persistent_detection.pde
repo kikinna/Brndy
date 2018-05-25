@@ -47,7 +47,7 @@ int threshold = 75;
 boolean useAdaptiveThreshold = false; // use basic thresholding
 int thresholdBlockSize = 489;
 int thresholdConstant = 45; // 45
-int blobSizeThreshold = 80; // 20
+int blobSizeThreshold = 50; // 20
 int blobSizeMax = 200;
 int blurSize = 5; //4 
 int blobLife = 60;
@@ -156,10 +156,10 @@ void draw() {
   opencvImg.blend(bckgSub, 0, 0, bckgSub.width, bckgSub.height, 0, 0, bckgSub.width, bckgSub.height, SUBTRACT);
   opencv.loadImage(opencvImg);
   
-  opencv.erode();
+  ////opencv.erode();
   opencv.erode();
   opencv.dilate();
-  opencv.dilate();
+  //opencv.dilate();
   
   // Save snapshot for display
   processedImage = opencv.getOutput();
