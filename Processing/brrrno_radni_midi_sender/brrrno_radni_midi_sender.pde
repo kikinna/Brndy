@@ -19,13 +19,13 @@ boolean mouseDown = false;
 int currentIndex = 0;
 
 void setup() {
-  size(128, 128);
+  size(512, 424);
   frameRate(10);
   // For windows we need to install and set Loop Internal MIDI as MIDI output
   MidiBus.list();
   midiBus = new MidiBus(this, 0, "LoopBe Internal MIDI");
   
-  //killAll();
+  killAll();
 }
 
 void draw() {
@@ -60,8 +60,9 @@ void killAll() {
 void sendMidiMessages() {
   for(int i = 0; i < midiBlobs.length; i++) {
     if (midiBlobs[i] != null) {
-      print("Sending", "id:", i, "x:", midiBlobs[i].x, "y:", midiBlobs[i].y, "r:", midiBlobs[i].r, "\n");
-      midiBus.sendControllerChange(0, i, midiBlobs[i].x);
+      float x_out = map(midiBlobs[i].x, 0, 512, 0, 127);
+      print("Sending", "id:", i, "x:", int(x_out), "y:", midiBlobs[i].y, "r:", midiBlobs[i].r, "\n");
+      midiBus.sendControllerChange(0, i, int(x_out));
       midiBus.sendControllerChange(1, i, midiBlobs[i].y);
       //midiBus.sendControllerChange(2, i, midiBlobs[i].r);
     }

@@ -15,9 +15,9 @@ public class AgentDirector : MonoBehaviour
 	[SerializeField] float             m_AutoModeAfterSeconds = 5f;
 
 	[Header("Mapping Setup")]
-	[SerializeField] Vector2           m_XInMapping           = new Vector2(0f, 127f);
+	[SerializeField] Vector2           m_XInMapping           = new Vector2(0f, 512f);
 	[SerializeField] Vector2           m_XOutMapping          = new Vector2(-15f, 15f);
-	[SerializeField] Vector2           m_ZInMapping           = new Vector2(0f, 127f);
+	[SerializeField] Vector2           m_ZInMapping           = new Vector2(0f, 424f);
 	[SerializeField] Vector2           m_ZOutMapping          = new Vector2(-20f, 7f);
 
 	// PRIVATE MEMBERS
@@ -35,7 +35,8 @@ public class AgentDirector : MonoBehaviour
 	{
 		m_Receiver = FindObjectOfType<MidiReceiver>();
 		m_AgentManager = GetComponent<AgentManager>();
-	}
+        Debug.Log("vectorX: " + m_XInMapping.ToString());
+    }
 
 	protected void Update()
 	{

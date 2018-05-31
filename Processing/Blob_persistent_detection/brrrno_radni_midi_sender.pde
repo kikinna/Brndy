@@ -10,9 +10,11 @@ void initMidiSender() {
 
 void sendMidiMessage(Blob b) { 
   Rectangle rect = b.getBoundingBox();
-  print("Sending", "id:", b.id % 128, "x:", rect.x, "y:", rect.y, "r:", "\n");
-  midiBus.sendControllerChange(0, b.id % 128, 128-rect.x);
-  midiBus.sendControllerChange(1, b.id % 128, rect.y);
+  float x_out = 127 - map(rect.x, 0, 512, 0, 127);
+  float y_out = map(rect.y, 0, 424, 0, 127);
+  print("Sending", "id:", b.id % 128, "x:", x_out, "y:", rect.y, "r:", "\n");
+  midiBus.sendControllerChange(0, b.id % 128, int(x_out));
+  midiBus.sendControllerChange(1, b.id % 128, int(y_out));
 }
 
 void sendMidiDead(Blob b) {

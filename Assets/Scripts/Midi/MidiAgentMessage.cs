@@ -26,7 +26,7 @@ public class MidiAgentMessage
 
 	public void SetX(float value)
 	{
-		m_Position.x = value;
+        m_Position.x = -value;
 		m_XSet = true;
 	}
 
